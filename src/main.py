@@ -14,12 +14,14 @@ def main():
     # Filter brackets with more than 20 entrants.
     min_20_entrants = [bracket for bracket in brackets if bracket.total_entrants > 20]
 
-    run_analytics(brackets)
+    output = run_analytics(brackets)
     # TODO: Uncomment when full analysis is implemented.
-    # min_20_entrants_analysis = run_analytics(min_20_entrants)
+    # min_20_entrants_output = run_analytics(min_20_entrants)
 
-    # TODO: Implement further analysis or output of results
+    print(output)
     print("Analysis complete.")
+
+    # TODO: implement CSV output functionality.
 
 if __name__ == "__main__":
     main()
