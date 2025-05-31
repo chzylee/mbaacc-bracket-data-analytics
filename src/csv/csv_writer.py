@@ -123,12 +123,13 @@ def write_character_representation_to_csv(char_representation: dict, output_file
         for row in zip(c_players, c_chars, f_players, f_chars, h_players, h_chars):
             writer.writerow(row)
 
-def write_csv_output(output: AnalysisOutput, output_dir: str) -> None:
+def write_csv_output(output: AnalysisOutput, output_dir: str, file_distinguisher: str="") -> None:
     """
     Writes the analysis output to a CSV file.
 
     :param output: output from analysis.
     :param output_path: Path to the output CSV file.
+    :param file_distinguisher: Optional distinguisher for the output file names.
     """
     if not output:
         print("No output to write to CSV.")
@@ -139,23 +140,27 @@ def write_csv_output(output: AnalysisOutput, output_dir: str) -> None:
     # Create the directory if it doesn't exist
     os.makedirs(today_output_dir, exist_ok=True)
 
+    identifier = f"{file_distinguisher}-" if file_distinguisher else ""
+
     write_moon_majorities_to_csv(
         output.get_moon_majorities_dict(),
-        os.path.join(today_output_dir, f"moon_majorities_{today_date}.csv")
+        os.path.join(today_output_dir, f"{identifier}moon-majorities.csv")
     )
     write_moon_players_to_csv(
         output.get_moon_players_dict(),
-        os.path.join(today_output_dir, f"moon_players_{today_date}.csv")
+        os.path.join(today_output_dir, f"{identifier}moon-players.csv")
     )
     write_character_totals_to_csv(
         output.get_character_totals_dict(),
-        os.path.join(today_output_dir, f"character_totals_{today_date}.csv")
+        os.path.join(today_output_dir, f"{identifier}character-totals.csv")
     )
     write_character_counts_to_csv(
         output.get_character_counts_dict(),
-        os.path.join(today_output_dir, f"character_counts_{today_date}.csv")
+        os.path.join(today_output_dir, f"{identifier}character-counts.csv")
     )
     write_character_representation_to_csv(
         output.get_character_representation_dict(),
-        os.path.join(today_output_dir, f"character_representation_{today_date}.csv")
+        os.path.join(today_output_dir, f"{identifier}character-representation.csv")
     )
+
+    print(f"Results written to {today_output_dir}")

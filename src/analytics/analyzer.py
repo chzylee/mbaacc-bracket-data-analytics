@@ -34,9 +34,9 @@ def run_analytics(brackets: List[Bracket]) -> AnalysisOutput:
     h_unique_players = filters.filter_players_by_tag(h_all_players)
 
     char_counts = CharacterCounts.from_player_results(all_player_results)
-    c_unique_counts = count_character_occurrences(c_unique_players)
-    f_unique_counts = count_character_occurrences(f_unique_players)
-    h_unique_counts = count_character_occurrences(h_unique_players)
+    c_unique_counts = count_character_occurrences(c_all_players)
+    f_unique_counts = count_character_occurrences(f_all_players)
+    h_unique_counts = count_character_occurrences(h_all_players)
 
     c_char_representation = filters.filter_unique_players_and_characters(c_all_players)
     f_char_representation = filters.filter_unique_players_and_characters(f_all_players)

@@ -15,18 +15,20 @@ def main():
     brackets = brackets = load_brackets_from_csv(csv_path)
 
     # Filter brackets with more than 20 entrants.
-    min_20_entrants = [bracket for bracket in brackets if bracket.total_entrants > 20]
+    min_20_entrants = [bracket for bracket in brackets if bracket.total_entrants >= 20]
 
     output = run_analytics(brackets)
-    # TODO: Uncomment when full analysis is implemented.
-    # min_20_entrants_output = run_analytics(min_20_entrants)
+    min_20_entrants_output = run_analytics(min_20_entrants)
 
     print(output)
+    print(min_20_entrants_output)
     print("Analysis complete.")
 
     # Write output to CSV
     write_csv_output(output, output_dir)
-    print(f"Results written to {output_dir}")
+
+    if min_20_entrants_output:
+        write_csv_output(min_20_entrants_output, output_dir, "20-min-entrants")
 
 if __name__ == "__main__":
     main()
