@@ -4,7 +4,6 @@ from src.models.bracket import Bracket
 
 def load_brackets_from_csv(csv_path):
     brackets = []
-    print(f"Loading brackets from {csv_path}...")
     if not csv_path.endswith('.csv'):
         raise ValueError("The provided file is not a CSV file.")
     try:
