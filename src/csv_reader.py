@@ -1,6 +1,6 @@
 import csv
-from models.player_result import PlayerResult
-from models.bracket import Bracket
+from src.models.player_result import PlayerResult
+from src.models.bracket import Bracket
 
 def load_brackets_from_csv(csv_path):
     brackets = []

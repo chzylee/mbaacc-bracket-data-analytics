@@ -1,7 +1,7 @@
 import sys
-from csv_reader import load_brackets_from_csv
-from models.player_result import PlayerResult
-from models.bracket import Bracket
+from src.csv_reader import load_brackets_from_csv
+from src.models.player_result import PlayerResult
+from src.models.bracket import Bracket
 
 def main():
     if len(sys.argv) < 2:
