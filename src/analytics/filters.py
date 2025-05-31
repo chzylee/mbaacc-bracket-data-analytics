@@ -66,3 +66,18 @@ def filter_unique_players_and_characters(players: List[PlayerResult]) -> List[Tu
             player_char_pairs.append((player.tag, full_char_name))
 
     return player_char_pairs
+
+def count_moon_occurrences(results: List[PlayerResult]) -> Dict[str, int]:
+    """
+    Count the number of times each moon appears amongst finalists.
+
+    Args:
+        players (list): List of PlayerResult objects.
+
+    Returns:
+        dict: A dictionary with moon names as keys and the count of results as values.
+    """
+    moon_counts = defaultdict(int)
+    for player in results:
+        moon_counts[player.moon] += 1
+    return dict(moon_counts)

@@ -16,6 +16,8 @@ class AnalysisOutput:
 
     moon_majorities: MoonMajorities = None
 
+    moon_counts: Dict[str, int] = None
+
     c_moon_players: Set[str] = None
     f_moon_players: Set[str] = None
     h_moon_players: Set[str] = None
@@ -53,6 +55,7 @@ class AnalysisOutput:
             f"F Moon Shutouts: {self.moon_majorities.f_shutouts}\n"
             f"H Moon Shutouts: {self.moon_majorities.h_shutouts}\n"
             f"Moon Ties: {self.moon_majorities.ties}\n"
+            f"Moon Counts: [ {stringify_dict(self.moon_counts)} ]"
             f"C Moon Players: {self.c_moon_players}\n"
             f"F Moon Players: {self.f_moon_players}\n"
             f"H Moon Players: {self.h_moon_players}\n"
@@ -92,6 +95,13 @@ class AnalysisOutput:
             "F Shutouts": self.moon_majorities.f_shutouts,
             "H Shutouts": self.moon_majorities.h_shutouts,
             "Moon Ties": self.moon_majorities.ties
+        }
+
+    def get_moon_counts_dict(self):
+        return {
+            "C Count": self.moon_counts.get("C", 0),
+            "F Count": self.moon_counts.get("F", 0),
+            "H Count": self.moon_counts.get("H", 0)
         }
 
     def get_moon_players_dict(self):

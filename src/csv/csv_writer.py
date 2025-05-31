@@ -86,6 +86,17 @@ def write_moon_majorities_to_csv(moon_majorities: dict, output_filepath: str):
         writer.writerow(moon_majorities)
 
 
+def write_moon_counts_to_csv(moon_counts: dict, output_filepath: str):
+    if not moon_counts:
+        print("No moon counts to write to CSV.")
+        return
+
+    with open(output_filepath, "w", newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=moon_counts.keys())
+        writer.writeheader()
+        writer.writerow(moon_counts)
+
+
 def write_moon_players_to_csv(players: dict, output_filepath: str):
     if not players:
         print("No players to write to CSV.")
@@ -223,15 +234,17 @@ def write_csv_output(brackets: List[Bracket], output: AnalysisOutput, output_dir
         output.get_player_placement_counts_dict(),
         os.path.join(today_output_dir, f"{identifier}player-placement-counts.csv")
     )
-
     write_player_occurrences_to_csv(
         output.get_player_occurrences_dict(),
         os.path.join(today_output_dir, f"{identifier}player-occurrences.csv")
     )
-
     write_moon_majorities_to_csv(
         output.get_moon_majorities_dict(),
         os.path.join(today_output_dir, f"{identifier}moon-majorities.csv")
+    )
+    write_moon_counts_to_csv(
+        output.get_moon_counts_dict(),
+        os.path.join(today_output_dir, f"{identifier}moon-counts.csv")
     )
     write_moon_players_to_csv(
         output.get_moon_players_dict(),
