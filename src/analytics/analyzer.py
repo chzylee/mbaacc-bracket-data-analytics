@@ -13,7 +13,7 @@ def run_analytics(brackets: List[Bracket]) -> AnalysisOutput:
     for bracket in brackets:
         bracket.print_results()
         moon_count = MoonCount() # Init state of moon count for each bracket.
-        for result in bracket.top_8_results:
+        for result in bracket.finalists_results:
             all_player_results.append(PlayerResult(
                 tag=result.tag,
                 moon=result.moon,

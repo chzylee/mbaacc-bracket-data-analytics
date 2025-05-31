@@ -1,4 +1,5 @@
 import sys
+import src.bracket_filters as filters
 from src.csv.csv_reader import load_brackets_from_csv
 from src.csv.csv_writer import write_csv_output
 from src.analytics.analyzer import run_analytics
@@ -12,16 +13,20 @@ def main():
     output_dir = sys.argv[2] if len(sys.argv) > 2 else "csv-output"
 
     print(f"Loading brackets from {csv_path}...")
-    brackets = brackets = load_brackets_from_csv(csv_path)
+    brackets = load_brackets_from_csv(csv_path)
 
     # Filter brackets with more than 20 entrants.
-    min_20_entrants = [bracket for bracket in brackets if bracket.total_entrants >= 20]
+    min_20_entrants = filters.get_brackets_with_min_20_entrants(brackets)
+    # Get just top 4 results from brackets with more than 20 entrants.
+    notable_top_4_brackets = filters.brackets_with_top_4_results(min_20_entrants)
 
     output = run_analytics(brackets)
     min_20_entrants_output = run_analytics(min_20_entrants)
+    top_4_output = run_analytics(notable_top_4_brackets)
 
     print(output)
     print(min_20_entrants_output)
+    print(top_4_output)
     print("Analysis complete.")
 
     # Write output to CSV
@@ -29,6 +34,9 @@ def main():
 
     if min_20_entrants_output:
         write_csv_output(min_20_entrants_output, output_dir, "20-min-entrants")
+
+    if top_4_output:
+        write_csv_output(top_4_output, output_dir, "notable-top-4")
 
 if __name__ == "__main__":
     main()

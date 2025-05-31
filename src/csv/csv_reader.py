@@ -15,7 +15,7 @@ def load_brackets_from_csv(csv_path):
                     date=row['Date'],
                     total_entrants=int(row['Total Entrants'])
                 )
-                bracket.top_8_results = [
+                bracket.finalists_results = [
                     PlayerResult(tag=row['1st Tag'], moon=row['1st Moon'], character=row['1st Char'], placement=1),
                     PlayerResult(tag=row['2nd Tag'], moon=row['2nd Moon'], character=row['2nd Char'], placement=2),
                     PlayerResult(tag=row['3rd Tag'], moon=row['3rd Moon'], character=row['3rd Char'], placement=3),
