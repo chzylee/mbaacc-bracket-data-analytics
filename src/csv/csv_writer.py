@@ -1,8 +1,79 @@
 import csv
 import os
 from datetime import datetime
-
+from typing import List
+from src.models.bracket import Bracket
 from src.analytics.output import AnalysisOutput
+
+def write_brackets_to_csv(brackets: List[Bracket], output_filepath: str):
+    if not brackets:
+        print("No brackets to write to CSV.")
+        return
+
+    header = [
+        "Bracket Name", "Date", "Total Entrants",
+        "1st Tag", "1st Moon", "1st Char",
+        "2nd Tag", "2nd Moon", "2nd Char",
+        "3rd Tag", "3rd Moon", "3rd Char",
+        "4th Tag", "4th Moon", "4th Char",
+        "5th Tag 1", "5th Moon 1", "5th Char 1",
+        "5th Tag 2", "5th Moon 2", "5th Char 2",
+        "7th Tag 1", "7th Moon 1", "7th Char 1",
+        "7th Tag 2", "7th Moon 2", "7th Char 2"
+    ]
+
+    with open(output_filepath, "w", newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+        for bracket in brackets:
+            row = [
+                bracket.name,
+                bracket.date,
+                bracket.total_entrants,
+            ]
+            # Add each placement's data in order
+            # Ensure you have exactly 8 PlayerResult objects in the correct order
+            for i in range(8):
+                if i < len(bracket.finalists_results):
+                    player = bracket.finalists_results[i]
+                    row.extend([player.tag, player.moon, player.character])
+                else:
+                    row.extend(["", "", ""])
+            writer.writerow(row)
+
+
+def write_player_placement_counts_to_csv(player_placement_counts: dict, output_filepath: str):
+    if not player_placement_counts:
+        print("No player placement counts to write to CSV.")
+        return
+
+    players = player_placement_counts.get("Player Tag", [])
+    characters = player_placement_counts.get("Character", [])
+    placements = player_placement_counts.get("Placement", [])
+    counts = player_placement_counts.get("Count", [])
+
+    with open(output_filepath, "w", newline='', encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(list(player_placement_counts.keys()))
+        for row in zip(players, characters, placements, counts):
+            writer.writerow(row)
+
+
+def write_player_occurrences_to_csv(player_occurrences: dict, output_filepath: str):
+    if not player_occurrences:
+        print("No player occurrences to write to CSV.")
+        return
+
+    players = player_occurrences.get("Player Tag", [])
+    characters = player_occurrences.get("Character", [])
+    counts = player_occurrences.get("Count", [])
+
+    with open(output_filepath, "w", newline='', encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(list(player_occurrences.keys()))
+        for row in zip(players, characters, counts):
+            writer.writerow(row)
+
 
 def write_moon_majorities_to_csv(moon_majorities: dict, output_filepath: str):
     if not moon_majorities:
@@ -123,7 +194,8 @@ def write_character_representation_to_csv(char_representation: dict, output_file
         for row in zip(c_players, c_chars, f_players, f_chars, h_players, h_chars):
             writer.writerow(row)
 
-def write_csv_output(output: AnalysisOutput, output_dir: str, file_distinguisher: str="") -> None:
+
+def write_csv_output(brackets: List[Bracket], output: AnalysisOutput, output_dir: str, file_distinguisher: str="") -> None:
     """
     Writes the analysis output to a CSV file.
 
@@ -141,6 +213,21 @@ def write_csv_output(output: AnalysisOutput, output_dir: str, file_distinguisher
     os.makedirs(today_output_dir, exist_ok=True)
 
     identifier = f"{file_distinguisher}-" if file_distinguisher else ""
+
+    write_brackets_to_csv(
+        brackets,
+        os.path.join(today_output_dir, f"{identifier}brackets.csv")
+    )
+
+    write_player_placement_counts_to_csv(
+        output.get_player_placement_counts_dict(),
+        os.path.join(today_output_dir, f"{identifier}player-placement-counts.csv")
+    )
+
+    write_player_occurrences_to_csv(
+        output.get_player_occurrences_dict(),
+        os.path.join(today_output_dir, f"{identifier}player-occurrences.csv")
+    )
 
     write_moon_majorities_to_csv(
         output.get_moon_majorities_dict(),

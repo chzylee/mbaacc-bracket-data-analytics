@@ -4,6 +4,7 @@ from src.models.bracket import Bracket
 from src.models.player_result import PlayerResult
 from src.analytics.data.character_counts import CharacterCounts, count_character_occurrences
 from src.analytics.data.moon_majorities import MoonMajorities, MoonCount, update_moon_majorities
+from src.analytics.data.player_counts import count_player_placements, count_player_occurrences
 from src.analytics.output import AnalysisOutput
 
 def run_analytics(brackets: List[Bracket]) -> AnalysisOutput:
@@ -13,7 +14,7 @@ def run_analytics(brackets: List[Bracket]) -> AnalysisOutput:
     for bracket in brackets:
         bracket.print_results()
         moon_count = MoonCount() # Init state of moon count for each bracket.
-        for result in bracket.top_8_results:
+        for result in bracket.finalists_results:
             all_player_results.append(PlayerResult(
                 tag=result.tag,
                 moon=result.moon,
@@ -21,7 +22,13 @@ def run_analytics(brackets: List[Bracket]) -> AnalysisOutput:
                 placement=result.placement
             ))
             moon_count[result.moon] += 1
-        update_moon_majorities(moon_count, moon_majorities)
+
+        # Threshold is half of the total finalists being analyzed since there are 3 moons.
+        majority_threshold = len(bracket.finalists_results) / 2
+        update_moon_majorities(moon_count, moon_majorities, majority_threshold)
+
+    player_placement_counts = count_player_placements(all_player_results)
+    player_occurrences = count_player_occurrences(all_player_results)
 
     players_by_moon = filters.group_players_by_moon(all_player_results)
     c_all_players = players_by_moon.get("C", [])
@@ -43,13 +50,9 @@ def run_analytics(brackets: List[Bracket]) -> AnalysisOutput:
     h_char_representation = filters.filter_unique_players_and_characters(h_all_players)
 
     return AnalysisOutput(
-        c_moon_majorities= moon_majorities.c_majorities,
-        f_moon_majorities= moon_majorities.f_majorities,
-        h_moon_majorities= moon_majorities.h_majorities,
-        c_moon_shutouts= moon_majorities.c_shutouts,
-        f_moon_shutouts= moon_majorities.f_shutouts,
-        h_moon_shutouts= moon_majorities.h_shutouts,
-        moon_ties= moon_majorities.ties,
+        player_placement_counts=player_placement_counts,
+        player_occurrences=player_occurrences,
+        moon_majorities=moon_majorities,
         c_moon_players=[p.tag for p in c_unique_players],
         f_moon_players=[p.tag for p in f_unique_players],
         h_moon_players=[p.tag for p in h_unique_players],
