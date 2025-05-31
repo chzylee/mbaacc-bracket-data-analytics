@@ -12,3 +12,12 @@ class Bracket:
 
     def __repr__(self):
         return f"Bracket(name={self.name}, date={self.date}, total_entrants={self.total_entrants}, top_8_results={self.top_8_results})"
+
+    def print_results(self):
+        print("------------------------------------------------------------------------")
+        print(f"{self}  Results:")
+        if self.top_8_results:
+            print(" | ".join(str(player) for player in self.top_8_results))
+        else:
+            print("No results available.")
+        print("------------------------------------------------------------------------\n")
