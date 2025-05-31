@@ -24,19 +24,23 @@ def run_analytics(brackets: List[Bracket]) -> AnalysisOutput:
         update_moon_majorities(moon_count, moon_majorities)
 
     players_by_moon = filters.group_players_by_moon(all_player_results)
+    c_all_players = players_by_moon.get("C", [])
+    f_all_players = players_by_moon.get("F", [])
+    h_all_players = players_by_moon.get("H", [])
+
     # Every moon *should* have at least one player, but default to [] if not.
-    c_unique_players = filters.filter_players_by_tag(players_by_moon.get("C", []))
-    f_unique_players = filters.filter_players_by_tag(players_by_moon.get("F", []))
-    h_unique_players = filters.filter_players_by_tag(players_by_moon.get("H", []))
+    c_unique_players = filters.filter_players_by_tag(c_all_players)
+    f_unique_players = filters.filter_players_by_tag(f_all_players)
+    h_unique_players = filters.filter_players_by_tag(h_all_players)
 
     char_counts = CharacterCounts.from_player_results(all_player_results)
     c_unique_counts = count_character_occurrences(c_unique_players)
     f_unique_counts = count_character_occurrences(f_unique_players)
     h_unique_counts = count_character_occurrences(h_unique_players)
 
-    c_char_representation = filters.filter_unique_players_and_characters(c_unique_players)
-    f_char_representation = filters.filter_unique_players_and_characters(f_unique_players)
-    h_char_representation = filters.filter_unique_players_and_characters(h_unique_players)
+    c_char_representation = filters.filter_unique_players_and_characters(c_all_players)
+    f_char_representation = filters.filter_unique_players_and_characters(f_all_players)
+    h_char_representation = filters.filter_unique_players_and_characters(h_all_players)
 
     return AnalysisOutput(
         c_moon_majorities= moon_majorities.c_majorities,

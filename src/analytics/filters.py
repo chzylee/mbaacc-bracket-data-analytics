@@ -15,12 +15,16 @@ def group_players_by_moon(players: List[PlayerResult]) -> Dict[str, List[PlayerR
         dict: A dictionary with moon names as keys and lists of PlayerResult objects as values.
     """
     players_by_moon = defaultdict(list)
-    seen: Dict[str, set[Tuple[str, str]]] = defaultdict(set)
+    seen = set()
     for player in players:
-        key = (player.tag, player.character)
-        if key not in seen[player.moon]:
+        key = (player.tag, player.moon, player.character)
+        print(f"Processing player: {player.tag}, Moon: {player.moon}, Character: {player.character}")
+        if key not in seen:
+            print(f"Adding {player.tag} {player.character} to {player.moon}-moon")
+            seen.add(key)
             players_by_moon[player.moon].append(player)
-            seen[player.moon].add(key)
+        else:
+            print(f"Skipping duplicate player: {player.tag}, Moon: {player.moon}, Character: {player.character}")
     return dict(players_by_moon)
 
 def filter_players_by_tag(players: List[PlayerResult]) -> List[PlayerResult]:
@@ -55,7 +59,7 @@ def filter_unique_players_and_characters(players: List[PlayerResult]) -> List[Tu
     player_char_pairs = []
 
     for player in players:
-        key = (player.tag, player.character)
+        key = (player.tag, player.moon, player.character)
         if key not in seen:
             seen.add(key)
             full_char_name = f"{player.moon}-{player.character}"
