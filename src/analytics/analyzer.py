@@ -21,7 +21,10 @@ def run_analytics(brackets: List[Bracket]) -> AnalysisOutput:
                 placement=result.placement
             ))
             moon_count[result.moon] += 1
-        update_moon_majorities(moon_count, moon_majorities)
+
+        # Threshold is half of the total finalists being analyzed since there are 3 moons.
+        majority_threshold = len(bracket.finalists_results) / 2
+        update_moon_majorities(moon_count, moon_majorities, majority_threshold)
 
     players_by_moon = filters.group_players_by_moon(all_player_results)
     c_all_players = players_by_moon.get("C", [])

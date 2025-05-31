@@ -47,21 +47,23 @@ class MoonCount:
             raise KeyError(key)
 
 
-def update_moon_majorities(moon_count: MoonCount, moon_majorities: MoonMajorities) -> Dict[str, int]:
+def update_moon_majorities(moon_count: MoonCount, moon_majorities: MoonMajorities, threshold: int=4) -> Dict[str, int]:
     """
     Count the number of times each moon appears in the top 8 results of all brackets.
 
     Args:
-        brackets (list): List of Bracket objects containing top 8 results.
+        moon_count (MoonCount): Set of current counts for each moon.
+        moon_majorities (MoonMajorities): Current counts of moon majorities and shutouts to update.
+        threshold (int): The minimum count for a moon to be considered a majority. Default is 4 (3 moons, top 8).
 
     Returns:
         dict: A dictionary with moons as keys and their counts as values.
     """
-    if moon_count.c >= 4 and moon_count.f > 0 and moon_count.h > 0:
+    if moon_count.c >= threshold and moon_count.f > 0 and moon_count.h > 0:
         moon_majorities.c_majorities += 1
-    elif moon_count.f >= 4 and moon_count.c > 0 and moon_count.h > 0:
+    elif moon_count.f >= threshold and moon_count.c > 0 and moon_count.h > 0:
         moon_majorities.f_majorities += 1
-    elif moon_count.h >= 4 and moon_count.c > 0 and moon_count.f > 0:
+    elif moon_count.h >= threshold and moon_count.c > 0 and moon_count.f > 0:
         moon_majorities.h_majorities += 1
     elif moon_count.c > 0 and moon_count.f > 0 and moon_count.h > 0:
         # If no moon takes at least 4/8 top 8 spots and all moons are present, 2 moons must have a tie.
