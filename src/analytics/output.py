@@ -68,3 +68,51 @@ class AnalysisOutput:
             f"H Character Representation: [ {stringify_tuples(self.h_char_representation)} ]\n"
             "******************************************************"
         )
+
+    def get_moon_majorities_dict(self):
+        return {
+            "C Majorities": self.c_moon_majorities,
+            "F Majorities": self.f_moon_majorities,
+            "H Majorities": self.h_moon_majorities,
+            "C Shutouts": self.c_moon_shutouts,
+            "F Shutouts": self.f_moon_shutouts,
+            "H Shutouts": self.h_moon_shutouts,
+            "Moon Ties": self.moon_ties
+        }
+
+    def get_moon_players_dict(self):
+        return {
+            "C Players": sorted(self.c_moon_players),
+            "F Players": sorted(self.f_moon_players),
+            "H Players": sorted(self.h_moon_players)
+        }
+
+    def get_character_totals_dict(self):
+        return {
+            "C Char Names": list(self.c_character_totals.keys()) if self.c_character_totals else [],
+            "C Totals": list(self.c_character_totals.values()) if self.c_character_totals else [],
+            "F Char Names": list(self.f_character_totals.keys()) if self.f_character_totals else [],
+            "F Char Totals": list(self.f_character_totals.values()) if self.f_character_totals else [],
+            "H Char Names": list(self.h_character_totals.keys()) if self.h_character_totals else [],
+            "H Char Totals": list(self.h_character_totals.values()) if self.h_character_totals else []
+        }
+
+    def get_character_counts_dict(self):
+        return {
+            "C Char Names": list(self.c_character_counts.keys()) if self.c_character_counts else [],
+            "C Counts": list(self.c_character_counts.values()) if self.c_character_counts else [],
+            "F Char Names": list(self.f_character_counts.keys()) if self.f_character_counts else [],
+            "F Counts": list(self.f_character_counts.values()) if self.f_character_counts else [],
+            "H Char Names": list(self.h_character_counts.keys()) if self.h_character_counts else [],
+            "H Counts": list(self.h_character_counts.values()) if self.h_character_counts else []
+        }
+
+    def get_character_representation_dict(self):
+        return {
+            "C Players": [tag for tag, char in self.c_char_representation] if self.c_char_representation else [],
+            "C Chars": [char for tag, char in self.c_char_representation] if self.c_char_representation else [],
+            "F Players": [tag for tag, char in self.f_char_representation] if self.f_char_representation else [],
+            "F Chars": [char for tag, char in self.f_char_representation] if self.f_char_representation else [],
+            "H Players": [tag for tag, char in self.h_char_representation] if self.h_char_representation else [],
+            "H Chars": [char for tag, char in self.h_char_representation] if self.h_char_representation else []
+        }
