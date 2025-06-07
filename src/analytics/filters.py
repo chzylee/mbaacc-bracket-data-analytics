@@ -2,6 +2,36 @@ from collections import defaultdict
 from typing import List, Dict, Tuple, Set
 from src.models.player_result import PlayerResult
 
+def count_player_occurrences(results: List[PlayerResult]) -> Dict[str, int]:
+    """
+    Count the number of times each player appears in the results.
+
+    Args:
+        results (list): List of PlayerResult objects.
+
+    Returns:
+        dict: A dictionary with player tags as keys and the count of occurrences as values.
+    """
+    player_counts = defaultdict(int)
+    for player in results:
+        player_counts[player.tag] += 1
+    return dict(player_counts)
+
+def count_moon_occurrences(results: List[PlayerResult]) -> Dict[str, int]:
+    """
+    Count the number of times each moon appears amongst finalists.
+
+    Args:
+        players (list): List of PlayerResult objects.
+
+    Returns:
+        dict: A dictionary with moon names as keys and the count of results as values.
+    """
+    moon_counts = defaultdict(int)
+    for player in results:
+        moon_counts[player.moon] += 1
+    return dict(moon_counts)
+
 def group_players_by_moon(players: List[PlayerResult]) -> Dict[str, List[PlayerResult]]:
     """
     Filter list of PlayerResults to group players by their moon and ensure no duplicates.

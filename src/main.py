@@ -30,13 +30,9 @@ def main():
     print("Analysis complete.")
 
     # Write output to CSV
-    write_csv_output(brackets, output, output_dir)
-
-    if min_20_entrants_output:
-        write_csv_output(min_20_entrants_brackets, min_20_entrants_output, output_dir, "20-min-entrants")
-
-    if top_4_output:
-        write_csv_output(notable_top_4_brackets, top_4_output, output_dir, "notable-top-4")
+    write_csv_output(brackets, output, output_dir, "all-brackets")
+    write_csv_output(min_20_entrants_brackets, min_20_entrants_output, output_dir, "20-min-entrants")
+    write_csv_output(notable_top_4_brackets, top_4_output, output_dir, "notable-top-4")
 
 if __name__ == "__main__":
     main()

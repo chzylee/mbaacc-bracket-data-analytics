@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import List, Set, Dict, Tuple
-from src.analytics.data.player_counts import PlayerPlacementCount, PlayerCount
+from src.analytics.data.player_counts import PlayerPlacementCount, PlayerCharCount
 from src.analytics.data.moon_majorities import MoonMajorities
 
 @dataclass
@@ -12,9 +12,13 @@ class AnalysisOutput:
     """
 
     player_placement_counts: List[PlayerPlacementCount] = None
-    player_occurrences: List[PlayerCount] = None
+    player_occurrences: List[PlayerCharCount] = None
+
+    player_counts: Dict[str, int] = None
 
     moon_majorities: MoonMajorities = None
+
+    moon_counts: Dict[str, int] = None
 
     c_moon_players: Set[str] = None
     f_moon_players: Set[str] = None
@@ -46,6 +50,7 @@ class AnalysisOutput:
         # Return a neatly formatted string representation
         return (
             "******************************************************\n"
+            f"Player Counts: [ {stringify_dict(self.player_counts)} ]\n"
             f"C Moon Majorities: {self.moon_majorities.c_majorities}\n"
             f"F Moon Majorities: {self.moon_majorities.f_majorities}\n"
             f"H Moon Majorities: {self.moon_majorities.h_majorities}\n"
@@ -53,6 +58,7 @@ class AnalysisOutput:
             f"F Moon Shutouts: {self.moon_majorities.f_shutouts}\n"
             f"H Moon Shutouts: {self.moon_majorities.h_shutouts}\n"
             f"Moon Ties: {self.moon_majorities.ties}\n"
+            f"Moon Counts: [ {stringify_dict(self.moon_counts)} ]"
             f"C Moon Players: {self.c_moon_players}\n"
             f"F Moon Players: {self.f_moon_players}\n"
             f"H Moon Players: {self.h_moon_players}\n"
@@ -83,6 +89,12 @@ class AnalysisOutput:
             "Count": [count.count for count in self.player_occurrences]
         }
 
+    def get_player_counts_dict(self):
+        return {
+            "Player Tag": list(self.player_counts.keys()) if self.player_counts else [],
+            "Count": list(self.player_counts.values()) if self.player_counts else []
+        }
+
     def get_moon_majorities_dict(self):
         return {
             "C Majorities": self.moon_majorities.c_majorities,
@@ -92,6 +104,13 @@ class AnalysisOutput:
             "F Shutouts": self.moon_majorities.f_shutouts,
             "H Shutouts": self.moon_majorities.h_shutouts,
             "Moon Ties": self.moon_majorities.ties
+        }
+
+    def get_moon_counts_dict(self):
+        return {
+            "C Count": self.moon_counts.get("C", 0),
+            "F Count": self.moon_counts.get("F", 0),
+            "H Count": self.moon_counts.get("H", 0)
         }
 
     def get_moon_players_dict(self):
