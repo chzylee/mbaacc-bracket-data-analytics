@@ -30,6 +30,8 @@ def run_analytics(brackets: List[Bracket]) -> AnalysisOutput:
     player_placement_counts = count_player_placements(all_player_results)
     player_occurrences = count_player_occurrences(all_player_results)
 
+    player_counts = filters.count_player_occurrences(all_player_results)
+
     moon_counts = filters.count_moon_occurrences(all_player_results)
 
     players_by_moon = filters.group_players_by_moon(all_player_results)
@@ -54,6 +56,7 @@ def run_analytics(brackets: List[Bracket]) -> AnalysisOutput:
     return AnalysisOutput(
         player_placement_counts=player_placement_counts,
         player_occurrences=player_occurrences,
+        player_counts=player_counts,
         moon_majorities=moon_majorities,
         moon_counts=moon_counts,
         c_moon_players=[p.tag for p in c_unique_players],

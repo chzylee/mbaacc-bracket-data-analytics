@@ -59,19 +59,34 @@ def write_player_placement_counts_to_csv(player_placement_counts: dict, output_f
             writer.writerow(row)
 
 
-def write_player_occurrences_to_csv(player_occurrences: dict, output_filepath: str):
-    if not player_occurrences:
+def write_player_char_counts_to_csv(player_char_counts: dict, output_filepath: str):
+    if not player_char_counts:
         print("No player occurrences to write to CSV.")
         return
 
-    players = player_occurrences.get("Player Tag", [])
-    characters = player_occurrences.get("Character", [])
-    counts = player_occurrences.get("Count", [])
+    players = player_char_counts.get("Player Tag", [])
+    characters = player_char_counts.get("Character", [])
+    counts = player_char_counts.get("Count", [])
 
     with open(output_filepath, "w", newline='', encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(list(player_occurrences.keys()))
+        writer.writerow(list(player_char_counts.keys()))
         for row in zip(players, characters, counts):
+            writer.writerow(row)
+
+
+def write_player_counts_to_csv(player_counts: dict, output_filepath: str):
+    if not player_counts:
+        print("No player counts to write to CSV.")
+        return
+
+    players = player_counts.get("Player Tag", [])
+    counts = player_counts.get("Count", [])
+
+    with open(output_filepath, "w", newline='', encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(list(player_counts.keys()))
+        for row in zip(players, counts):
             writer.writerow(row)
 
 
@@ -234,9 +249,13 @@ def write_csv_output(brackets: List[Bracket], output: AnalysisOutput, output_dir
         output.get_player_placement_counts_dict(),
         os.path.join(today_output_dir, f"{identifier}player-placement-counts.csv")
     )
-    write_player_occurrences_to_csv(
+    write_player_char_counts_to_csv(
         output.get_player_occurrences_dict(),
         os.path.join(today_output_dir, f"{identifier}player-occurrences.csv")
+    )
+    write_player_counts_to_csv(
+        output.get_player_counts_dict(),
+        os.path.join(today_output_dir, f"{identifier}player-counts.csv")
     )
     write_moon_majorities_to_csv(
         output.get_moon_majorities_dict(),

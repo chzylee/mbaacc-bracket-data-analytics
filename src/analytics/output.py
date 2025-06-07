@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import List, Set, Dict, Tuple
-from src.analytics.data.player_counts import PlayerPlacementCount, PlayerCount
+from src.analytics.data.player_counts import PlayerPlacementCount, PlayerCharCount
 from src.analytics.data.moon_majorities import MoonMajorities
 
 @dataclass
@@ -12,7 +12,9 @@ class AnalysisOutput:
     """
 
     player_placement_counts: List[PlayerPlacementCount] = None
-    player_occurrences: List[PlayerCount] = None
+    player_occurrences: List[PlayerCharCount] = None
+
+    player_counts: Dict[str, int] = None
 
     moon_majorities: MoonMajorities = None
 
@@ -48,6 +50,7 @@ class AnalysisOutput:
         # Return a neatly formatted string representation
         return (
             "******************************************************\n"
+            f"Player Counts: [ {stringify_dict(self.player_counts)} ]\n"
             f"C Moon Majorities: {self.moon_majorities.c_majorities}\n"
             f"F Moon Majorities: {self.moon_majorities.f_majorities}\n"
             f"H Moon Majorities: {self.moon_majorities.h_majorities}\n"
@@ -84,6 +87,12 @@ class AnalysisOutput:
             "Player Tag": [count.tag for count in self.player_occurrences],
             "Character": [count.character for count in self.player_occurrences],
             "Count": [count.count for count in self.player_occurrences]
+        }
+
+    def get_player_counts_dict(self):
+        return {
+            "Player Tag": list(self.player_counts.keys()) if self.player_counts else [],
+            "Count": list(self.player_counts.values()) if self.player_counts else []
         }
 
     def get_moon_majorities_dict(self):

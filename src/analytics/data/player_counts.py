@@ -37,12 +37,12 @@ def count_player_placements(player_results: List[PlayerResult]) -> List[PlayerPl
 
 
 @dataclass
-class PlayerCount:
+class PlayerCharCount:
     tag: str
     character: str
     count: int
 
-def count_player_occurrences(player_results: List[PlayerResult]) -> List[PlayerCount]:
+def count_player_occurrences(player_results: List[PlayerResult]) -> List[PlayerCharCount]:
     """
     Counts the number of occurrences for each player and character combination.
     Characters are identified by their moon and character name.
@@ -62,6 +62,6 @@ def count_player_occurrences(player_results: List[PlayerResult]) -> List[PlayerC
     result = []
     for tag, char_dict in counts.items():
         for character, count in char_dict.items():
-            result.append(PlayerCount(tag=tag, character=character, count=count))
+            result.append(PlayerCharCount(tag=tag, character=character, count=count))
 
     return result
